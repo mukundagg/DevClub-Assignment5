@@ -3,7 +3,7 @@
 ## Heroku App
 See  deployment for HoloLMS [here](https://hololms.herokuapp.com/).
 
-### Feautres Implemented:
+### Features Implemented:
  - Users - Admin, Student, Instructor, Course. Admin, Student and Instructor are subclasses of the Django Custom User Model, edited as Member class.
  - Grades - Assignment model, which can be an ordinary Assignment or a Quiz
  - Documents - Docs model, which stores a file (won't work in Heroku because of `/media`)
