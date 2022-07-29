@@ -146,10 +146,6 @@ AUTH_USER_MODEL = 'Users.Member'
 # For communicating between pages
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
-
-# Enable WhiteNoise's GZip compression of static assets.
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
