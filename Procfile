@@ -1,1 +1,3 @@
-web: gunicorn --bind 0.0.0.0:$PORT hololms:app
+web: gunicorn DevClubLMS.wsgi:application --log-file - --log-level debug
+heroku ps:scale web=1
+python manage.py migrate
