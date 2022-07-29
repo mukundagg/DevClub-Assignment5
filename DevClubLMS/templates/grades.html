@@ -4,7 +4,7 @@
     {% load static %}
     <meta charset="UTF-8">
     <title>Home</title>
-    <link rel="icon" type="image/png" href="{% static '/favicons/H.png' %}">
+    <link rel="icon" type="image/png" href="{% static '/H.png' %}">
     <link rel="stylesheet" href="{% static 'style.css' %}">    
     {% if not request.user.is_authenticated %} <!-- User must be logged in to view this part of the site -->
         <meta http-equiv="REFRESH" content="0;url=../user/login">
