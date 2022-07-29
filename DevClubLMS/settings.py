@@ -24,6 +24,7 @@ SECRET_KEY = 'django-insecure-r5($3_zye7)*g)*73j7av+g=unyuui2o9^c!z7x_s)5959&fjk
 if 'SECRET_KEY' in os.environ:
     SECRET_KEY = os.environ["SECRET_KEY"]
 IS_HEROKU = "DYNO" in os.environ
+ALLOWED_HOSTS = []
 if IS_HEROKU:
     ALLOWED_HOSTS = ["*"]
 else:
@@ -33,9 +34,6 @@ else:
 DEBUG = False
 if not IS_HEROKU:
     DEBUG = True
-
-
-ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -126,10 +124,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
+STATIC_URL = '/static/'
+STATIC_ROOT = "/static/"
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace('\\', '/')
+MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = '/media/'
 MEDIAFILES_DIRS = (
     os.path.join(BASE_DIR, 'media/'),
