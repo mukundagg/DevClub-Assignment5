@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>User Login</title>
+        <link rel="icon" type="image/png" href="/static/Favicons/H.png">
+        <link rel="stylesheet" href="/static/style.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container-fluid d-flex justify-content-center align-items-center vh-100 flex-wrap" style="background-image: url('../../static/images/mymind-wHJ5L9KGTl4-unsplash.jpg'); background-size: cover">
+            <div class="row col-sm-4" style="background-color: #fff /*rgba(0, 179, 255, .3)*/; padding: 50px; border-radius: 5px; margin: 0px;">
+                <div class="container-fluid" style="height: 100px; background-image: url('../../static/logo.png'); background-size: contain; background-repeat: no-repeat; background-position: 50% 50%; margin-bottom: 25px;"></div>
+                <h1 style="margin-bottom: 25px; text-align: center;">Login</h1>
+                {% if messages %}
+                    {% for i in messages %}
+                            <div class="alert alert-danger" role="alert">{{ i }}</div>
+                    {% endfor %}
+                {% endif %}
+                <form action='auth/' method='post'>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="entryNo">Entry No.</label>
+                        <input type="text" name='entryNo' class="form-control" style="font-family: 'Fantasque Sans Mono'; font-size: 18px"><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name='password' class="form-control" style="font-family: 'Fantasque Sans Mono'; font-size: 18px"><br>
+                    </div>
+                    <div class="form-group" style="text-align: center">
+                        <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                        <a href="../register/"><button type="button" class="btn btn-primary btn-lg">Register</button></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <footer class="bg-dark text-center text-lg-start">
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2); color: #999;">
+              Copyright &copy; <script>document.write(new Date().getFullYear())</script> HoloNorm Inc. All rights reserved.
+            </div>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" type="image/png" href="/static/Favicons/H.png">
+    {% if not request.user.is_authenticated %} <!-- User must be logged in to view this part of the site -->
+        <meta http-equiv="REFRESH" content="0;url=../user/login">
+    {% endif %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        nav li a {
+            font-size: 1.1em !important;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .scrollcontainer::-webkit-scrollbar {
+            background: rgba(0, 0, 0, .05) !important;
+            width: 10px;
+        }
+    
+        .scrollcontainer::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 100px rgba(0,0,0,0);
+            -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,0); 
+            border-radius: 10px;
+        }
+    
+        .scrollcontainer::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,0.3); 
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation section -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="text-align: center">
+        <a class="navbar-brand" href="#" style="margin-left: 25px">
+            <img src="../static/logo_dark.png" height="70" class="d-inline-block align-top" alt="">
+        </a>
+        <button style="margin-right: 25px" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" role="navigation">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/{{request.user.entryNo}}">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/grades">Grades</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/allcourses">Courses</a>
+                </li>
+                {% if not request.user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/messages">Messages</a>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="ms-auto mb-lg-0" style="margin-right: 25px">
+                <form action="../user/logout/">
+                    <label style="color: #fff; font-size: 0.9em; margin-right: 20px">Signed in as {{ request.user.fullname }}</label>
+                    <button type="submit" class="btn btn-outline-light ml-md-auto">Logout</button>
+                </form>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid d-flex justify-content-center flex-wrap" style="background-color: #fff; padding-top: 50px; padding-bottom: 25px;">
+        <div class="row container" style="background-color: rgba(233, 233, 233, .8); padding-top: 25px; padding-bottom: 15px;  border-radius: 15px; margin-bottom: 25px;">
+            <h1 style="margin-left: 20px; font-size: 42px">View Messages</h1>
+        </div>
+
+
+        <div class="row container" style="background-color: rgba(233, 233, 233, .3); padding-top: 25px; padding-bottom: 25px;  border-radius: 15px;">
+            <div class="col-sm-4 d-flex flex-column scrollcontainer" style="padding: 0px; padding-top: 10px; border-radius: 5px; border: 1px solid rgba(0, 0, 0, 0.2); min-height: 30rem; max-height: 30rem; overflow-y: scroll; overflow-x: hidden;">
+                <div class="container d-flex justify-content-end align-items-center">
+                    <style>
+                        #msgpstP:hover a {
+                            color: #fff !important;
+                        }
+                    </style> 
+                    <div class="container-fluid d-flex flex-row"> 
+                        <div class="col-sm-4 d-flex align-items-end justify-content-start">
+                            <h5 style="font-size: 1.1em; font-family: 'Fantasque Sans Mono'; color: #999;">INBOX</h5>
+                        </div>
+                        <div class="col-sm-8 d-flex justify-content-end align-items-center">
+                            <button type="button" id="msgpstP" class="btn btn-sm btn-outline-primary" style="margin-bottom: 5px;"><a href="#" data-toggle="modal" data-target="#newmessageModal" style="text-decoration: none;" id="messagePst" class="d-flex justify-content-center align-items-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                            </svg>&nbsp;&nbsp;New Message</a></button>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+                        /*color: #fff !important;*/
+                        background-color: rgba(1, 1, 1, .1);
+                    }
+                </style>
+                <div class="nav flex-column nav-pills me-3 w-100" id="v-pills-tab" role="tablist" aria-orientation="vertical"  style="margin-top: 10px;">
+                    {% for i in allmessages %}
+                    <button class="nav-link container-fluid" id="v-pills-msg{{forloop.counter}}-tab" data-bs-toggle="pill"
+                        data-bs-target="#v-pills-msg{{forloop.counter}}" type="button" role="tab" aria-controls="v-pills-msg{{forloop.counter}}"
+                        aria-selected="false" style="border: 1px solid rgb(1, 1, 1, .1); border-radius: 0px; padding-top: 25px; padding-bottom: 25px; color: rgb(1, 1, 1, .7); font-family: 'Fantasque Sans Mono'; font-size: 18px;" id="defaultclick">{% if i.0.fromMsg == request.user.entryNo %}{{ i.0.toMsg }}{% else %}{{ i.0.fromMsg }}{% endif %}</button>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-sm-8 scrollcontainer" style="padding: 5px; border-radius: 5px; border: 1px solid rgba(0, 0, 0, 0.2); min-height: 30rem; max-height: 30rem; overflow-y: scroll;">
+                <div class="tab-content" id="v-pills-tabContent">
+                {% for i, k in allmessages2 %}
+                    <div class="tab-pane fade" id="v-pills-msg{{forloop.counter}}" role="tabpanel" aria-labelledby="v-pills-msg{{forloop.counter}}-tab" tabindex="0">
+                        <form action="/messages/replyusermsg" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="input-group mb-3">
+                                <input type="text" name="lastmsg" value="{{k}}" style="visibility: hidden; position: absolute;"/>
+                                <input type="text" class="form-control" name="replycontent" style="border-radius: 1000px;"/>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-primary d-flex justify-content-center align-items-center" style="padding: 10px; border-radius: 1000px"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+                                        <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+                                      </svg></button>
+                                </div>
+                            </div>             
+                        </form>
+                        <ul class="list-group">
+                        {% for j in i %}
+                            <li class="list-group-item {% if j.fromMsg == request.user.entryNo %}active{% endif %}">
+                                <p style="color: #999; font-family: 'Fantasque Sans Mono';"><a href="/user/{{j.fromMsg}}" style="color: #999; font-family: 'Fantasque Sans Mono';">{{j.fromMsg}}</a> wrote on {{j.datetimesent}}</p>
+                                {{j.content}}
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="newmessageModal" tabindex="-1" role="dialog" aria-labelledby="newmessageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="message">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="documentModalLabel">New Message</h5>
+                  <button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close" style="border-radius: 200px; border: 1px solid rgba(0, 0, 0, 0); background-color: rgba(250, 128, 114, .4); padding: 5px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                      </svg>                                              
+                   </button>
+                </div>
+                <form action="/messages/newusermsg" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="msgto">To (Entry No.)</label>
+                        <input type="text" name="msgto" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="msgcont">Message</label>
+                        <textarea name="msgcont" class="form-control" rows="15"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit">Post</button>
+                    </form>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-center text-lg-start">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2); color: #999;">
+          Copyright &copy; <script>document.write(new Date().getFullYear())</script> HoloNorm Inc. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>

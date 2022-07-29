@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" type="image/png" href="/static/Favicons/H.png">
+    {% if not request.user.is_authenticated %} <!-- User must be logged in to view this part of the site -->
+        <meta http-equiv="REFRESH" content="0;url=../user/login">
+    {% endif %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <style>
+        nav li a {
+            font-size: 1.1em !important;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation section -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="text-align: center">
+        <a class="navbar-brand" href="#" style="margin-left: 25px">
+            <img src="../static/logo_dark.png" height="70" class="d-inline-block align-top" alt="">
+        </a>
+        <button style="margin-right: 25px" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" role="navigation">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/{{request.user.entryNo}}">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/grades">Grades</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/allcourses">Courses</a>
+                </li>
+                {% if not request.user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/messages">Messages</a>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="ms-auto mb-lg-0" style="margin-right: 25px">
+                <form action="../user/logout/">
+                    <label style="color: #fff; font-size: 0.9em; margin-right: 20px">Signed in as {{ request.user.fullname }}</label>
+                    <button type="submit" class="btn btn-outline-light ml-md-auto">Logout</button>
+                </form>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid d-flex justify-content-center flex-wrap" style="background-color: #fff; padding-top: 50px; padding-bottom: 25px;">
+        <div class="row container" style="background-color: rgba(233, 233, 233, .8); padding-top: 25px; padding-bottom: 15px;  border-radius: 15px; margin-bottom: 15px;">
+            <h1 style="margin-left: 20px; font-size: 42px">All Courses</h1>
+            {% if request.user.is_instructor %}
+            <button class="btn btn-success" data-toggle="modal" data-target="#createcourseModal" class="d-flex justify-content-center align-items-center">Create Course</button>
+            {% endif %}
+        </div>
+        {% if request.user.is_instructor %}
+        <div class="modal modal-lg fade" id="createcourseModal" tabindex="-1" role="dialog" aria-labelledby="createcourseModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="create">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="documentModalLabel">Create Course</h5>
+                  <button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close" style="border-radius: 200px; border: 1px solid rgba(0, 0, 0, 0); background-color: rgba(250, 128, 114, .4); padding: 5px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                      </svg>                                              
+                   </button>
+                </div>
+                <div class="modal-body">
+                    <form action="../user/createcourse/" method="post">
+                        {% csrf_token %}
+                        <label>Course Code</label>
+                        <input type="text" name="coursecode" class="form-control"/><br />
+                        <label>Course Name</label>
+                        <input type="text" name="coursename" class="form-control"/><br />
+                        <label>Students</label>
+                        <select class="form-select form-control" name="study" multiple>
+                            {% for i in allstudents %}
+                                <option value={{i}}> {{ i.fullname }}, {{ i.entryNo }}</option>
+                            {% endfor %}
+                        </select>
+                        <label>Instructors</label>
+                        <select class="form-select form-control" name="instruct" multiple>
+                            {% for i in allinstructors %}
+                                <option value={{i}}> {{ i.fullname }}, {{ i.entryNo }}</option>
+                            {% endfor %}
+                        </select><br />
+                        <label>Total (Possible) Students</label>
+                        <input type="text" name="total" class="form-control"/><br />
+                        <label>Course Start</label>
+                        <input type="date" name="start" class="form-control"/><br />
+                        <label>Course End</label>
+                        <input type="date" name="end" class="form-control"/><br />
+                        <label>Course Period</label>
+                        <select class="form-select" name="options">
+                            <option value="SUMMER">Summer</option>
+                            <option value="SPRING">Spring</option>
+                            <option value="FALL">Fall</option>
+                            <option value="WINTER">Winter</option>
+                        </select><br />
+                        <label>Course Semester</label>
+                        <input type="number" name="semester" class="form-control"/><br />
+                    </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>                    
+                    </form>
+                </div>
+              </div>
+        </div>
+        {% endif %}
+        <div class="row container d-flex justify-content-center align-items-center" style="background-color: rgba(233, 233, 233, .3); padding: 25px;  border-radius: 15px;">
+            {% for i in allcourses %}
+            <div class="card" style="width: 18rem; margin-left: 10px; margin-right: 10px; margin-bottom: 20px;">
+                <img class="card-img-top" src="../{{i.coursephoto}}">
+                <div class="card-body">
+                    <h5 class="card-title" style="font-size: 22px;">{{i.courseCode}}</h5><hr />
+                    <p class="card-text" style="font-family: 'Fantasque Sans Mono'; font-size: 18px">{{i.courseName}}<br />{{ i.coursePeriod }}, Semester {{ i.semester }}</p>
+                    <hr/><div class="container d-flex justify-content-center align-items-center">
+                        <a href="../course/{{i.courseCode}}" class="btn btn-primary">Go to Course</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer class="bg-dark text-center text-lg-start">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2); color: #999;">
+          Copyright &copy; <script>document.write(new Date().getFullYear())</script> HoloNorm Inc. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>

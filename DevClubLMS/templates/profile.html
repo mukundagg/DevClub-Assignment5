@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="icon" type="image/png" href="/static/Favicons/H.png">
+    <link rel="stylesheet" href="/static/style.css">
+    {% if not request.user.is_authenticated %} <!-- User must be logged in to view this part of the site -->
+        <meta http-equiv="REFRESH" content="0;url=../user/login">
+    {% endif %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <style>
+        nav li a {
+            font-size: 1.1em !important;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation section -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="text-align: center">
+        <a class="navbar-brand" href="#" style="margin-left: 25px">
+            <img src="../static/logo_dark.png" height="70" class="d-inline-block align-top" alt="">
+        </a>
+        <button style="margin-right: 25px" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" role="navigation">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.user.entryNo == userBody.entryNo %} active {% endif %}" href="/user/{{request.user.entryNo}}">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/grades/">Grades</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/allcourses/">Courses</a>
+                </li>
+                {% if not request.user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/messages">Messages</a>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="ms-auto mb-lg-0" style="margin-right: 25px">
+                <form action="../user/logout/">
+                    <label style="color: #fff; font-size: 0.9em; margin-right: 20px">Signed in as {{ request.user.fullname }}</label>
+                    <button type="submit" class="btn btn-outline-light ml-md-auto">Logout</button>
+                </form>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid d-flex justify-content-center flex-wrap" style="padding-top: 50px; padding-bottom: 50px;">
+        {% load static %}
+        <div class="row container" style="background-color: #E9E9E9; padding-top: 25px; padding-bottom: 25px;  border-top-right-radius: 15px; border-top-left-radius: 15px;">
+            <div class="col-sm-3 d-flex justify-content-center" style="padding-bottom: 25px;">
+                <img src="../{{ userBody.profilephoto }}" alt="Profile picture" height="195" width="195" style="border-radius: 100%">
+            </div>
+            <div class="col-sm-6 d-flex justify-content-center align-items-center flex-wrap" style="text-align: center;">
+                <h1 style="min-width: 100%; font-size: 2.5em;">{{ userBody.fullname }}</h1>
+                {% if userBody.entryNo == request.user.entryNo %}
+                    <a href="#" style="text-decoration: none"><button class="btn btn-light btn-lg d-flex justify-content-center align-items-center" style="margin-right: 10px; background-color: #0DAEE1; border-color: #0DAEE1; color: #fff"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#fff" class="bi bi-pip-fill" viewBox="0 0 16 16"><path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zm7 6h5a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5z"/></svg>&nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#editModal" style="text-decoration: none; color: #fff">Edit Profile</a></button></a>
+                {% endif %}
+                <form {%if not userBody.is_superuser%}action="/messages/newusermsg"{%endif%} method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="text" name="msgto" value="{{userBody.entryNo}}" style="visibility: hidden; position: absolute;"/>
+                    <input type="text" name="msgcont" value="{{request.user.entryNo}} initiated a new conversation with you." style="visibility: hidden; position: absolute;"/>
+                    <a href="#" style="text-decoration: none"><button type="submit" class="btn btn-light btn-lg d-flex justify-content-center align-items-center" style="background-color: #1DBE5E; border-color: #1DBE5E; color: #fff;{%if userBody.is_superuser%}background-color: #aaa; border: 1px solid #aaa{%endif%}"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-chat-fill" viewBox="0 0 16 16"><path d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9.06 9.06 0 0 0 8 15z"/></svg>&nbsp;&nbsp;Message</button></a>
+                </form>
+            </div>
+            <div class="col-sm-3 d-flex justify-content-center flex-column" style="text-align: center; padding-top: 25px; font-size: 1.3em;">
+                <p style="font-family: 'Fantasque Sans Mono';">{{ userBody.entryNo }}</p>
+                <p style="font-family: 'Fantasque Sans Mono';">{{ userBody.email }}</p>
+                <p style="font-family: 'Fantasque Sans Mono';">{{ userBody.programme }}, {{ userBody.department }}</p>
+                {%if userBody.is_student%}<p style="font-family: 'Fantasque Sans Mono';">Year {{ userBody.year }}, Group {{ userBody.group }}</p>{%endif%}
+            </div>
+        </div>
+        <div class="row container" style="background-color: #F5F5F5; padding-top: 35px; padding-bottom: 35px; border-bottom-right-radius: 15px; border-bottom-left-radius: 15px;">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-5">
+                <h1 style="font-size: 1.5em">About</h1>
+                <p style="font-size: 1.2em; margin-top: 15px;">{{ userBody.about }}</p>
+            </div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-4">
+                <h1 style="font-size: 1.5em">Courses Registered</h1>
+                {% for i in allCourses %}
+                    <a href="../../course/{{ i.courseCode }}" style="font-family: 'Fantasque Sans Mono';"><button class="btn btn-outline-primary btn-sm" style="font-size: 1.1em; margin-top: 15px; border-radius: 1000px; padding: 2.5px; padding-left: 25px; padding-right: 25px; margin-right: 10px;">{{ i.courseCode }}</button></a>
+                {% endfor %}
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+                  <button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close" style="border-radius: 200px; border: 1px solid rgba(0, 0, 0, 0); background-color: rgba(250, 128, 114, .4); padding: 5px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                      </svg>                                              
+                   </button>
+                </div>
+                <div class="modal-body">
+                    <form action="editprofile/" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group" id="imageClicker" style="text-align:center; border: 2px solid rgba(0, 0, 0, .1); padding: 25px; border-radius: 10px; color: #444; margin-bottom: 25px; font-size: 1.1em;">
+                            <label for="newprofile" style="cursor: pointer">Change Profile Photo <br />
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#444" class="bi bi-camera" viewBox="0 0 16 16">
+                                    <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"/>
+                                    <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
+                                </svg>
+                                <input type="file" name="newprofile" id="uploadHere" style="display: none;"/>
+                                <span id="imageName"></span>
+                                <script>
+                                    let input = document.getElementById("uploadHere");
+                                    let imageName = document.getElementById("imageName")
+                                    let clicker = document.getElementById("imageClicker");
+
+                                    clicker.addEventListener("click", () => {
+                                        input.click();
+                                    });
+
+                                    input.addEventListener("change", () => {
+                                        let inputImage = document.querySelector("input[type=file]").files[0];
+                            
+                                        imageName.innerText = inputImage.name;
+                                    });
+                                </script>
+                            </label>
+                            <br />
+                        </div>
+                        <div class="form-group" style="color: #444; font-size: 1.1em">
+                            <label style="margin-bottom: 10px">Change About</label>
+                            <textarea name="newabout" rows="8" class="form-control" style="font-family: 'Fantasque Sans Mono'; margin-bottom: 10px;">
+                                {{ userBody.about }}
+                            </textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+    <footer class="bg-dark text-center text-lg-start">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2); color: #999;">
+          Copyright &copy; <script>document.write(new Date().getFullYear())</script> HoloNorm Inc. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Course</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" type="image/png" href="/static/Favicons/H.png">
+    {% if not request.user.is_authenticated %}
+    <!-- User must be logged in to view this part of the site -->
+    <meta http-equiv="REFRESH" content="0;url=../user/login">
+    {% endif %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        nav li a {
+            font-size: 1.1em !important;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .doctable td {
+            padding-top: 2.5px;
+            padding-bottom: 2.5px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation section -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="text-align: center">
+        <a class="navbar-brand" href="#" style="margin-left: 25px">
+            <img src="../static/logo_dark.png" height="70" class="d-inline-block align-top" alt="">
+        </a>
+        <button style="margin-right: 25px" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" role="navigation">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/{{request.user.entryNo}}">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/grades">Grades</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/allcourses">Courses</a>
+                </li>
+                {% if not request.user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/messages">Messages</a>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="ms-auto mb-lg-0" style="margin-right: 25px">
+                <form action="../user/logout/">
+                    <label style="color: #fff; font-size: 0.9em; margin-right: 20px">Signed in as {{ request.user.fullname }}</label>
+                    <button type="submit" class="btn btn-outline-light ml-md-auto">Logout</button>
+                </form>
+            </ul>
+        </div>
+    </nav>
+
+
+    <div class="container-fluid d-flex justify-content-center align-items-center flex-wrap"
+        style="padding-top: 50px; padding-bottom: 50px;">
+        {% load static %}
+        <div class="row container"
+            style="background-image: url('/{{courseBody.coursebackground}}'); border-radius: 15px; background-size: cover;">
+            <div class="col-sm-3 d-flex justify-content-center align-items-center"
+                style="padding-top: 25px; padding-bottom: 25px; background-color: inherit">
+                <img src="../{{ courseBody.coursephoto }}" alt="Profile picture" height="215"
+                    style="border-radius: 25px">
+            </div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3 d-flex justify-content-center align-items-center flex-column"
+                style="background-color: inherit; color: #fff; text-align: center;">
+                <h1 style="font-size: 2.95em;">{{ courseBody.courseCode }}</h1>
+                <h4
+                    style="margin-top: 10px; margin-bottom: 0px; font-size: 1.65em; font-family: 'Fantasque Sans Mono';">
+                    {{ courseBody.courseName }}</h4>
+                <p style="margin-top: 10px; font-size: 1.65em; font-family: 'Fantasque Sans Mono';">{{ courseBody.coursePeriod }}, Semester {{ courseBody.semester }}</p>
+            </div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-3 d-flex justify-content-center align-items-center flex-column"
+                style="background-color: inherit;">
+                <a href="/grades" style="text-decoration: none"><button
+                        class="btn btn-primary btn-lg d-flex justify-content-center align-items-center"
+                        style="padding: 18px 28px; font-size: 22px; line-height: normal; border-radius: 8px; background-color: #0DAEE1; border-color: #0DAEE1; margin-top: 25px;"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-clipboard-data-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z" />
+                            <path
+                                d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1ZM10 8a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V8Zm-6 4a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1Zm4-3a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" />
+                        </svg>&nbsp;&nbsp;Course Grades</button></a>
+                <a href="#" style="text-decoration: none;" data-toggle="modal" data-target="#participantsModal"><button
+                        class="btn btn-success btn-lg d-flex justify-content-center align-items-center"
+                        style="margin-top: 15px; padding: 18px 28px; font-size: 22px; line-height: normal; border-radius: 8px; background-color: #1DBE5E; border-color:#1DBE5E; margin-bottom: 25px;"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-collection-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M0 13a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 16 13V6a1.5 1.5 0 0 0-1.5-1.5h-13A1.5 1.5 0 0 0 0 6v7zM2 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11A.5.5 0 0 0 2 3zm2-2a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7A.5.5 0 0 0 4 1z" />
+                        </svg>&nbsp;&nbsp;Participants</button></a>
+            </div>
+        </div>
+        <div class="row container"
+            style="background-color: #F9F9F9; margin-top: 40px; border-radius: 15px; padding-top: 25px; padding-bottom: 25px;">
+
+            <div class="modal fade" id="participantsModal" tabindex="-1" role="dialog" aria-labelledby="participantsModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="message">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="documentModalLabel">Participants List</h5>
+                      <button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close" style="border-radius: 200px; border: 1px solid rgba(0, 0, 0, 0); background-color: rgba(250, 128, 114, .4); padding: 5px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                          </svg>                                              
+                       </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5 style="font-family: 'Fantasque Sans Mono'; text-transform: uppercase; font-size: 1.2em;">Instructors</h5>
+                        {% for i in courseBody.instructorList.all %}
+                        <p style="margin-bottom: 0px;"><a href="/user/{{i.entryNo}}" class="link">{{i.entryNo}}</a>, {{i.fullname}}</p>
+                        {% endfor %}<p></p><hr/><p></p>
+                        <h5 style="font-family: 'Fantasque Sans Mono'; text-transform: uppercase; font-size: 1.2em;">Students</h5>
+                        {% for i in courseBody.studentList.all %}
+                        <p style="margin-bottom: 0px;"><a href="/user/{{i.entryNo}}" class="link">{{i.entryNo}}</a>, {{i.fullname}}</p>
+                        {% endfor %}
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-start">
+                <div class="nav flex-column nav-pills me-3 col-sm-2" id="v-pills-tab" role="tablist" aria-orientation="vertical"  style="border: 1px solid rgb(13, 110, 253); border-radius: 10px;">
+                    <button class="nav-link nav-fill" id="v-pills-forum-tab" data-bs-toggle="pill"
+                        data-bs-target="#v-pills-forum" type="button" role="tab" aria-controls="v-pills-forum"
+                        aria-selected="false" style="border-bottom: 1px solid rgb(13, 110, 253);" id="defaultclick">Course Forum</button>
+                    <button class="nav-link nav-fill" id="v-pills-documents-tab" data-bs-toggle="pill"
+                        data-bs-target="#v-pills-documents" type="button" role="tab" aria-controls="v-pills-documents"
+                        aria-selected="false" style="border-bottom: 1px solid rgb(13, 110, 253);">Documents</button>
+                    <button class="nav-link nav-fill" id="v-pills-assignments-tab" data-bs-toggle="pill"
+                        data-bs-target="#v-pills-assignments" type="button" role="tab" aria-controls="v-pills-assignments"
+                        aria-selected="false" style="border-bottom: 1px solid rgb(13, 110, 253);">Assignments</button>
+                </div>
+
+
+                <div class="tab-content col-sm-10" id="v-pills-tabContent">
+                    <div class="tab-pane fade" id="v-pills-forum" role="tabpanel" aria-labelledby="v-pills-forum-tab" tabindex="0">
+                        <style>
+                            #msgpstP:hover a {
+                                color: #fff !important;
+                            }
+                        </style>
+                        <div class="container d-flex flex-column">
+                            <button id="msgpstP" class="btn btn-outline-primary d-flex justify-content-center align-items-center" style="margin-bottom: 15px; float: right;"><a href="#" data-toggle="modal" data-target="#newmessageModal" class="d-flex justify-content-center align-items-center" style="text-decoration: none;" id="messagePst"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-plus" viewBox="0 0 16 16">
+                                <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z"/>
+                                <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5Z"/>
+                            </svg>
+                            &nbsp;&nbsp;New Message</a></button>
+                            <div class="container-fill">
+                            {% for i in courseBody.forum.forumMessages.all %}
+                                <div class="card row no-gutters" style="margin-bottom: 10px">
+                                    <div class="card-header" style="font-family: 'Fantasque Sans Mono';">
+                                        By {{ i.fromMsg }}, on {{ i.datetimesent }}
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ i.title }}</h5>
+                                        <p class="card-text">{{ i.content }}</p>
+                                        <a href="/message/{{i.uniquemsgno}}" class="btn btn-sm btn-outline-primary d-flex justify-content-center align-items-center" style="font-family: 'Fantasque Sans Mono'">Continue Conversation&nbsp;&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                                          </svg></a>
+                                    </div>
+                                </div>
+                            {%endfor%}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="newmessageModal" tabindex="-1" role="dialog" aria-labelledby="newmessageModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="message">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="documentModalLabel">New Post</h5>
+                              <button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close" style="border-radius: 200px; border: 1px solid rgba(0, 0, 0, 0); background-color: rgba(250, 128, 114, .4); padding: 5px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                  </svg>                                              
+                               </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="postcourseforum/" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input type="text" name="coursecode" value="{{courseBody.courseCode}}" style="visibility: hidden; position: absolute;"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="posttitle">Title</label>
+                                    <input type="text" name="posttitle" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="msgcont">Message</label>
+                                    <textarea name="msgcont" class="form-control" rows="15"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" type="submit">Post</button>
+                                </form>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="tab-pane fade" id="v-pills-documents" role="tabpanel" aria-labelledby="v-pills-documents-tab" tabindex="0">
+                        <div class="container">
+                            {% if request.user.is_instructor %}
+                            <button class="btn btn-sm btn-success d-flex justify-content-center align-items-center" style="margin-bottom: 15px; float: right;"><a href="#" data-toggle="modal" data-target="#documentModal" class="d-flex justify-content-center align-items-center" style="text-decoration: none; color: #fff"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-plus-fill" viewBox="0 0 16 16">
+                                <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zM8.5 6v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0z"/>
+                              </svg>
+                              &nbsp;&nbsp;Upload Documents</a></button>
+                            {% endif %}
+                            <table class="table table-bordered table-striped doctable">
+                                <thead>        
+                                    <th colspan="3">Documents</th>
+                                </thead>
+                                <thead>
+                                    <th>S. No.</th>
+                                    <th>File Name</th>
+                                    <th>Date Uploaded</th>
+                                </thead>
+                                <tbody>
+                                    {% for i in courseBody.documentsList.all %}
+                                    <tr>
+                                        <td class="col-sm-1">{{ forloop.counter }}</td>
+                                        <td class="col-sm-7"><a href="../{{ i.file }}"><button class="btn btn-link">{{ i.name }}</button></a></td>
+                                        <td>{{ i.uploadedDate }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="modal fade" id="documentModal" tabindex="-1" role="dialog" aria-labelledby="documentModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="documentModalLabel">Upload Documents</h5>
+                                  <button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close" style="border-radius: 200px; border: 1px solid rgba(0, 0, 0, 0); background-color: rgba(250, 128, 114, .4); padding: 5px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                      </svg>                                              
+                                   </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="uploadcoursedocs/" method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <input type="text" name="coursecode" value="{{courseBody.courseCode}}" style="visibility: hidden; position: absolute;"/>
+                                        </div>
+                                        <div class="form-group" id="imageClicker" style="text-align:center; border: 2px solid rgba(0, 0, 0, .1); padding: 25px; border-radius: 10px; color: #444; margin-bottom: 25px; font-size: 1.1em;">
+                                            <label for="newprofile" style="cursor: pointer;">Add Document<br />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#444" class="bi bi-file-earmark" viewBox="0 0 16 16">
+                                                    <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
+                                                  </svg>
+                                                <input type="file" name="newcoursedoc" id="uploadHere" style="display: none;"/>
+                                                <span id="imageName"></span>
+                                                <script>
+                                                    let input = document.getElementById("uploadHere");
+                                                    let imageName = document.getElementById("imageName")
+                                                    let clicker = document.getElementById("imageClicker");
+                
+                                                    clicker.addEventListener("click", () => {
+                                                        input.click();
+                                                    });
+                
+                                                    input.addEventListener("change", () => {
+                                                        let inputImage = document.querySelector("input[type=file]").files[0];
+                                            
+                                                        imageName.innerText = inputImage.name;
+                                                    });
+                                                </script>
+                                            </label>
+                                            <br />
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Upload</button>
+                                        </div>
+                                    </form>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade" id="v-pills-assignments" role="tabpanel" aria-labelledby="v-pills-assignments-tab" tabindex="0">
+                        <div class="container">
+                            {% if request.user.is_instructor %}
+                            <button class="btn btn-sm btn-success d-flex justify-content-center align-items-center" style="margin-bottom: 15px; float: right;"><a href="#" data-toggle="modal" data-target="#assignmentModal" class="d-flex justify-content-center align-items-center" style="text-decoration: none; color: #fff;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-plus-fill" viewBox="0 0 16 16">
+                                <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zM8.5 6v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0z"/>
+                              </svg>
+                              &nbsp;&nbsp;Create Assignment</a></button>
+                            <button class="btn btn-sm btn-success d-flex justify-content-center align-items-center" style="margin-bottom: 15px; float: right; margin-left: 10px; margin-right: 10px;"><a href="#" data-toggle="modal" data-target="#quizModal" class="d-flex justify-content-center align-items-center" style="text-decoration: none; color: #fff"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-heading" viewBox="0 0 16 16">
+                                <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                                <path d="M3 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-1z"/>
+                              </svg>
+                              &nbsp;&nbsp;Create Quiz</a></button>
+                            <button class="btn btn-sm btn-success d-flex justify-content-center align-items-center" style="margin-bottom: 15px; float: right;"><a href="/gradecourse/{{courseBody.courseCode}}" class="d-flex justify-content-center align-items-center" style="text-decoration: none; color: #fff"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16">
+                                <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/>
+                              </svg>
+                              &nbsp;&nbsp;Check Coursework</a></button>
+                            {% endif %}
+                            <table class="table table-bordered table-striped doctable">
+                                <thead>        
+                                    <th colspan="6">Assignments</th>
+                                </thead>
+                                <thead>
+                                    <th>S. No.</th>
+                                    <th>Name</th>
+                                    <th>Date Uploaded</th>
+                                    <th>Due Date</th>
+                                    <th>Submitted</th>
+                                    <th>Result</th>
+                                </thead>
+                                <tbody>
+                                    {% for i in allassignments %}
+                                    <tr>
+                                        <td class="col-sm-1">{{ forloop.counter }}</td>
+                                        <td class="col-sm-4"><button class="btn btn-link" data-toggle="modal" data-target="#assignModal{{ forloop.counter }}">{{ i.name }}</button></td>
+                                        <td class="col-sm-2">{{ i.dateCreated }}</td>
+                                        <td class="col-sm-2" id="dueDateId{{forloop.counter}}">{{ i.dueDate }}</td>
+                                        <td class="col-sm-2">
+                                            {% if i.isSubmitted %}
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="green" class="bi bi-check2" viewBox="0 0 16 16">
+                                                <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                                            </svg>
+                                            {% else %}
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                              </svg>
+                                            {% endif %}
+                                        </td>
+                                        <td class="col-sm-1">{{ i.grade }}</td>
+                                    </tr>
+                                    {% if not i.isQuiz %}
+                                    <div class="modal fade" id="assignModal{{ forloop.counter }}" tabindex="-1" role="dialog" aria-labelledby="documentModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-centered" role="document">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h5 class="modal-title" id="assignModalLabel">{{ i.name }} (Assignment)</h5>
+                                              <button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close" style="border-radius: 200px; border: 1px solid rgba(0, 0, 0, 0); background-color: rgba(250, 128, 114, .4); padding: 5px;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                  </svg>                                              
+                                               </button>
+                                            </div>
+                                            <div class="modal-body">
+                                              <p style="margin-bottom: 0px">{{ i.description }}</p>
+                                              <a href="../{{ i.describeUpload.file }}">View Instructor File</a>
+                                              <form action="submitassignment/" method="POST" enctype="multipart/form-data" style="margin-top: 15px;" id="assignmentid{{forloop.counter}}">
+                                                {% csrf_token %}
+                                                <div class="form-group">
+                                                    <input class="form-control" type="text" name="coursecode" value="{{courseBody.courseCode}}" style="visibility: hidden; position: absolute;"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input class="form-control" type="text" name="assignmentcode" value="{{i.name}}" style="visibility: hidden; position: absolute;"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="yourresponse">Your Response: </label>
+                                                    <textarea class="form-control" name="yourresponse" rows="8" style="border: 1px solid rgba(0, 0, 0, .1); border-radius: 10px; min-width: 100%; margin-bottom: 10px; padding-left: 15px; padding-right: 5px;" {% if i.isSubmitted %}disabled {% endif %}>{{i.notes}}</textarea>
+                                                </div>
+                                                <div class="form-group" id="assignClicker{{ forloop.counter }}">
+                                                    <label for="newprofile" style="cursor: pointer;">Add File<br />
+                                                        <input class="form-control" type="file" name="submitfile"{% if i.isSubmitted %}disabled{% endif %}/>
+                                                        {% if i.isSubmitted %}
+                                                        <br />You Submitted: <a href="../{{i.submission.file}}">{{i.submission.name}}</a>
+                                                        {% endif %}
+                                                    </label>
+                                                    <br />
+                                                </div>
+                                            </div>
+                                            {% if not i.date_passed %}
+                                            <div class="modal-footer">
+                                              {% if not i.isSubmitted %}<button type="submit" class="btn btn-primary">Submit</button>{% endif %}
+                                            </div>
+                                            {% endif %}
+                                            </form>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      {% else %}
+                                      <div class="modal fade" id="assignModal{{ forloop.counter }}" tabindex="-1" role="dialog" aria-labelledby="documentModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-centered" role="document">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h5 class="modal-title" id="assignModalLabel">{{ i.name }} (Quiz)</h5>
+                                              <button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close" style="border-radius: 200px; border: 1px solid rgba(0, 0, 0, 0); background-color: rgba(250, 128, 114, .4); padding: 5px;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                  </svg>                                              
+                                               </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Quiz opens on : <i>{{i.quiz.startdatetime}}</i></p>
+                                                <p>Quiz closes on : <i>{{i.quiz.enddatetime}}</i></p>
+                                                <p>Quiz duration : <i>{{i.quiz.getduration}} (hours:minutes:seconds)</i></p>
+                                                <form action="/quiz/{{i.name}}" method="POST" enctype="multipart/form-data" class="d-flex justify-content-center align-items-center">
+                                                    {% csrf_token %}
+                                                    <div class="form-group">
+                                                        <input type="text" name="coursecode" value="{{courseBody.courseCode}}" style="visibility: hidden; position: absolute;"/>
+                                                    </div>        
+                                            </div>
+                                            {% if not i.date_passed %}
+                                            <div class="modal-footer">
+                                              {% if not i.isSubmitted %}<button class="btn btn-warning">Attempt Quiz</button>
+                                              {% endif %}
+                                            </div></form>
+                                            {% endif %}
+                                          </div>
+                                        </div>
+                                      </div>
+                                      {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="assignmentModal" tabindex="-1" role="dialog" aria-labelledby="assignmentModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="assignmentModalLabel">Create Assignment</h5>
+                              <button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close" style="border-radius: 200px; border: 1px solid rgba(0, 0, 0, 0); background-color: rgba(250, 128, 114, .4); padding: 5px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                  </svg>                                              
+                               </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="addassignment/" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <input type="text" name="coursecode" value="{{courseBody.courseCode}}" style="visibility: hidden; position: absolute;"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="assignname">Assignment Name: </label><br />
+                                        <input type="text" class="form-control" name="assignname" style="border: 1px solid rgba(0, 0, 0, .1); border-radius: 5px;" class="form-control"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="endDate">Due Date</label><br />
+                                        <input type="date" name="endDate" class="form-control"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="assignmarks">Max Marks: </label><br />
+                                        <input type="number" class="form-control" name="assignmarks" style="border: 1px solid rgba(0, 0, 0, .1); border-radius: 5px;" class="form-control"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="assigndescription">Description: </label>
+                                        <textarea class="form-control" name="assigndescription" rows="8" style="border: 1px solid rgba(0, 0, 0, .1); border-radius: 10px; min-width: 100%; margin-bottom: 10px; padding-left: 15px; padding-right: 5px;"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="assigninstructupload">Upload File: </label>
+                                        <input type="file" name="assigninstructupload" class="form-control"/>
+                                    </div><br />
+                                    <!--<div class="form-group form-check">
+                                        <input type="checkbox" name="assignquiz" class="form-check-input" id="flexSwitchCheckDefault" checked="unchecked"/>
+                                        <label for="flexSwitchCheckDefault" class="form-check-label">This Assignment is a Quiz </label>
+                                    </div><br />-->
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Create</button>
+                                    </div>
+                                </form>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="modal modal-lg fade" id="quizModal" tabindex="-1" role="dialog" aria-labelledby="quizModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="quizModalLabel">Create Quiz</h5>
+                              <button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close" style="border-radius: 200px; border: 1px solid rgba(0, 0, 0, 0); background-color: rgba(250, 128, 114, .4); padding: 5px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                  </svg>                                              
+                               </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="addquiz/" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <input type="text" name="coursecode" value="{{courseBody.courseCode}}" style="visibility: hidden; position: absolute;"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for = "quizname">Quiz Name</label>
+                                        <input type="text" name="quizname" class="form-control"/><br />
+                                        <label for="quizstartdatetime">Quiz Start</label>
+                                        <input type="datetime-local" name="quizstartdatetime" class="form-control"/><br />
+                                        <label for="quizenddatetime">Quiz End</label>
+                                        <input type="datetime-local" name="quizenddatetime" class="form-control"/><br />
+                                        <label for="quizduration">Quiz Duration</label>
+                                        <input type="time" name="quizduration" class="form-control"/><br />
+                                        <label for="quizinstructions">Quiz Instructions</label>
+                                        <textarea name="quizinstructions" rows="10" cols="50" class="form-control"></textarea><br />
+                                        <label for="quizmaxmarks">Max Marks</label>
+                                        <input type="number" name="quizmaxmarks" class="form-control"/><br />
+                                    </div>
+                                    <hr />
+                                    <div class="container-fluid" id="quizeditor"></div>
+                                    <button type="button" id="addsecn" class="btn btn-sm btn-danger">Add Section</button>
+                                    <button type="button" id="addqn" class="btn btn-sm btn-danger">Add Question</button>
+                                    <script>
+                                        var currentDiv = null, cntr = 1, secncntr = 1;
+                                        document.querySelector("#addsecn").addEventListener("click", () => {
+                                            let div = document.createElement("div");
+                                            let falseinput = document.createElement("input");
+                                            falseinput.type="text";
+                                            falseinput.style.position = "absolute";
+                                            falseinput.style.visibility = "hidden";
+                                            falseinput.name = `secn${secncntr}`;
+                                            ++secncntr;
+                                            div.classList = ["form-group", "newsection", "container"];
+                                            div.style.padding = "5px";
+                                            div.style.margin = "10px";
+                                            div.style.border = "1px solid rgba(0, 0, 0, .3)";
+                                            div.style.borderRadius = "5px";
+                                            currentDiv = div;
+                                            div.appendChild(falseinput);
+                                            document.querySelector("#quizeditor").appendChild(div);
+                                        });
+                                        document.querySelector("#addqn").addEventListener("click", () => {
+                                            let label = document.createElement("label");
+                                            label.for = `qn${cntr}`;
+                                            label.innerText = `Q${cntr}`;
+                                            let label2 = document.createElement("label");
+                                            label2.innerText = `Marks for Q${cntr}`
+                                            label2.for = `marksqn${cntr}`;
+                                            ++cntr;
+                                            currentDiv.appendChild(label);
+                                            let desc = document.createElement("textarea");
+                                            desc.className="form-control"
+                                            desc.name = label.for;
+                                            desc.rows = "5";
+                                            desc.cols = "50";  
+                                            currentDiv.appendChild(desc);
+                                            currentDiv.appendChild(label2);
+                                            let marks = document.createElement("input");
+                                            marks.className = "form-control";
+                                            marks.type = "text";
+                                            marks.name = label2.for;
+                                            currentDiv.appendChild(marks);
+                                            currentDiv.appendChild(document.createElement("br"));
+                                        }); 
+                                    </script>
+                                    
+                                    <div class="modal-footer" style="margin-top: 10px">
+                                        <button type="submit" class="btn btn-primary">Create</button>
+                                    </div>
+                                </form>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+        <footer class="bg-dark text-center text-lg-start">
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2); color: #999;">
+              Copyright &copy; <script>document.write(new Date().getFullYear())</script> HoloNorm Inc. All rights reserved.
+            </div>
+        </footer>
+</body>
+</html>

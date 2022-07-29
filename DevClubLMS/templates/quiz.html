@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" type="image/png" href="/static/Favicons/H.png">
+    {% if not request.user.is_authenticated %} <!-- User must be logged in to view this part of the site -->
+        <meta http-equiv="REFRESH" content="0;url=../user/login">
+    {% endif %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <style>
+        nav li a {
+            font-size: 1.1em !important;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation section -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="text-align: center">
+        <a class="navbar-brand" href="#" style="margin-left: 25px">
+            <img src="../static/logo_dark.png" height="70" class="d-inline-block align-top" alt="">
+        </a>
+        <button style="margin-right: 25px" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" role="navigation">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/{{request.user.entryNo}}">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/grades">Grades</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/allcourses">Courses</a>
+                </li>
+                {% if not request.user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/messages">Messages</a>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="ms-auto mb-lg-0" style="margin-right: 25px">
+                <form action="../user/logout/">
+                    <label style="color: #fff; font-size: 0.9em; margin-right: 20px">Signed in as {{ request.user.fullname }}</label>
+                    <button type="submit" class="btn btn-outline-light ml-md-auto">Logout</button>
+                </form>
+            </ul>
+        </div>
+    </nav>
+
+    {% if not isSubmitted %}
+    <div class="container-fluid d-flex justify-content-center flex-wrap" style="background-color: #fff; padding-top: 50px; padding-bottom: 25px;">
+        <div class="row container" style="background-color: rgba(233, 233, 233, .6); padding-top: 25px; padding-bottom: 25px;  border-radius: 15px;">
+            <div class="col-sm-2 d-flex justify-content-center flex-column" style="text-align: center">
+                <h2>{{quizContents.name}}</h2>
+            </div>
+            <div class="col-sm-4 d-flex justify-content-center flex-column" style="text-align: center;">
+                <p style="font-family: 'Fantasque Sans Mono'; font-size: 18px;">Start time - {{quizContents.startdatetime}}</p>
+                <p style="font-family: 'Fantasque Sans Mono'; font-size: 18px;">End time - {{quizContents.enddatetime}}</p>
+                <p style="font-family: 'Fantasque Sans Mono'; font-size: 18px; font-weight: bold;" id="timerclock">Time remaining - </p>
+            </div>
+            <div class="col-sm-6 d-flex justify-content-center flex-column" style="text-align: left;">
+                <p style="font-style: italic; font-size: 18px"><b>Max-marks</b> - {{ quizContents.maxmarks }}</p>
+                <p style="font-style: italic; font-size: 18px"><b>Course</b> - {{ coursecode }}</p>
+                <p style="font-style: italic; font-size: 18px"><b>Instructions</b> - {{ quizContents.instructions }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid d-flex flex-column">
+        <form action="/submitquiz" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for i in quizContents.listOfQnBanks.all %}
+            <div class="container d-flex justify-content-center fle" style="background-color: #fff; border: 1px solid inherit; margin-bottom: 25px; border-radius: 10px;">
+                <fieldset class="container form-control">
+                    <legend style="background-color: rgba(233, 233, 233, .6); text-align: center; font-family: 'Fantasque Sans Mono'; font-size: 20px; border-radius: 5px;">Section {{ forloop.counter }}</legend>
+                    {% for j in i.listOfQns.all %}
+                        <label style="font-size: 18px;"><b><u>Q{{j.qnNo}}.</u></b>&nbsp;&nbsp;{{j.qnData}}</label>
+                        <textarea name="ans{{j.qnNo}}" class="form-control" rows="8"></textarea>
+                        <!--<input type="file" name="ansfile{{j.qnNo}}" class="form-control" style="margin-top: 5px; margin-bottom: 25px"/>-->
+                    {% endfor %}
+                </fieldset>
+            </div>
+            {% endfor %}
+            <input type="text" name="coursecode" value="{{coursecode}}" style="visibility: hidden; position: absolute;"/>
+            <input type="text" name="quizname" value="{{quizContents.name}}" style="visibility: hidden; position: absolute;"/>
+            <div class="container d-flex justify-content-center align-items-center">
+                <button type="submit" class="btn btn-lg btn-primary" style="margin-bottom: 25px;">Submit Quiz</button>
+            </div>
+        </form> 
+    </div>   
+    {% endif %}
+    <script>
+        /*document.querySelector("#timerclock").innerText +=*/
+        let fullduration = "{{quizContents.duration}}".split(" ")[0] + ":00";
+        let hoursMinsSecs = fullduration.split(":");
+        let hrsminval = parseInt(hoursMinsSecs[0]) == 12 ? 0 : parseInt(hoursMinsSecs[0]);
+        let timeInSecs = hrsminval * 3600 + parseInt(hoursMinsSecs[1]) * 60 + parseInt(hoursMinsSecs[2]);
+
+        // This security feature allows only 1 quiz to occur in a browser at a time, as well as restores the timer remaining even after page change / reload
+        window.onload = function() {
+            if(!(isNaN(localStorage.getItem("timerRemaining")) || localStorage.getItem("timerRemaining") == 0)) {
+                // take the last time value
+                timeInSecs = localStorage.getItem("timerRemaining");
+                decrement();
+            } else {
+                decrement();
+            }
+        }
+
+        function decrement() {
+            if(timeInSecs == 0)
+                return;
+            let hoursRemaining = parseInt(timeInSecs / 3600);
+            let minsRemaining = parseInt((timeInSecs - (hoursRemaining * 3600)) / 60);
+            let secsRemaining = parseInt((timeInSecs - (hoursRemaining * 3600) - (minsRemaining * 60)));
+            document.querySelector("#timerclock").innerText = "Time remaining - " + hoursRemaining + " hr(s) " + minsRemaining + " min(s) " + secsRemaining + "s";
+            localStorage.setItem("timerRemaining", timeInSecs);
+            timeInSecs--;
+            setTimeout(decrement, 1000);
+        }
+
+        startdate = new Date("{{quizContents.startdatetime|date:'D, d M Y H:i:s'}}");
+        enddate = new Date("{{quizContents.enddatetime|date:'D, d M Y H:i:s'}}");
+        todaydate = new Date();
+        if(!(startdate.toISOString().split('T')[0] === todaydate.toISOString().split('T')[0] || enddate.toISOString().split('T')[0] >= todaydate.toISOString().split('T')[0]  && "{{isSubmitted}}" != "True")) { // NOT If we are on the same date and the quiz hasn't been submitted
+            window.location.replace("/course/{{coursecode}}");
+        }
+    </script>
+    <footer class="bg-dark text-center text-lg-start">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2); color: #999;">
+          Copyright &copy; <script>document.write(new Date().getFullYear())</script> HoloNorm Inc. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>
