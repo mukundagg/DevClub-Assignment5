@@ -1,5 +1,8 @@
 # DevClub Assignment 5
 
+## Heroku App
+Se  deployment for HoloLMS [here](https://hololms.herokuapp.com/).
+
 You have learnt about backend engineering with Django in our session. Now use it to create a web application by yourself!
 ## DevClub LMS (Learning Management System)
 You must have used **Moodle** in your courses, where both instructors and students login, and for each course, the instructor uses the platform to share resources, send announcements, release grades, conduct quizzes and what not!
