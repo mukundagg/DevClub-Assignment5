@@ -147,8 +147,8 @@ class Course(models.Model):
 
     def __init__(self, *args, **kwargs):
         if not args:
-            kwargs["coursephoto"] = "static/courseprofile/" + str(random.randint(1, 10)) + ".png";
-            kwargs["coursebackground"] = "static/coursebackground/" + str(random.randint(1, 10)) + ".png";
+            kwargs["coursephoto"] = "static/courseprofile/" + str(random.randint(1, 6)) + ".jpg";
+            kwargs["coursebackground"] = "static/coursebackground/" + str(random.randint(1, 6)) + ".jpg";
             newforum = message_models.Forum(name = kwargs["courseCode"]);
             newforum.save();
             kwargs["forum"] = newforum;
