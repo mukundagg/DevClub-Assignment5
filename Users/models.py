@@ -43,7 +43,7 @@ class CustomMemberManager(BaseUserManager):
 
 class Member(AbstractBaseUser, PermissionsMixin):
     entryNo = models.CharField(max_length=12, unique=True, blank=False);
-    profilephoto = models.ImageField(upload_to="media/", default="media/profile.png");
+    profilephoto = models.ImageField(upload_to="media/", default="static/profile.png");
     email = models.EmailField(max_length=500, unique=True, blank=False);
     password = models.CharField(max_length=500, blank=False);
     fullname = models.CharField(max_length=250, blank=False);
@@ -147,8 +147,8 @@ class Course(models.Model):
 
     def __init__(self, *args, **kwargs):
         if not args:
-            kwargs["coursephoto"] = "media/courseprofile/" + str(random.randint(1, 10)) + ".png";
-            kwargs["coursebackground"] = "media/coursebackground/" + str(random.randint(1, 10)) + ".png";
+            kwargs["coursephoto"] = "static/courseprofile/" + str(random.randint(1, 10)) + ".png";
+            kwargs["coursebackground"] = "static/coursebackground/" + str(random.randint(1, 10)) + ".png";
             newforum = message_models.Forum(name = kwargs["courseCode"]);
             newforum.save();
             kwargs["forum"] = newforum;
