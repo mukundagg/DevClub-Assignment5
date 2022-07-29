@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
+    {% load static %}
     <head>
         <title>User Login</title>
-        <link rel="icon" type="image/png" href="/static/favicons/H.png">
-        <link rel="stylesheet" href="/static/style.css">
+        <link rel="icon" type="image/png" href="{% static '/favicons/H.png' %}">
+        <link rel="stylesheet" href="{% static 'style.css' %}">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     </head>
     <body>
-        <div class="container-fluid d-flex justify-content-center align-items-center vh-100 flex-wrap" style="background-image: url('../../static/images/mymind-wHJ5L9KGTl4-unsplash.jpg'); background-size: cover">
+        <div class="container-fluid d-flex justify-content-center align-items-center vh-100 flex-wrap" style="background-image: url('{%static "images/mymind-wHJ5L9KGTl4-unsplash.jpg"%}'); background-size: cover">
             <div class="row col-sm-4" style="background-color: #fff /*rgba(0, 179, 255, .3)*/; padding: 50px; border-radius: 5px; margin: 0px;">
-                <div class="container-fluid" style="height: 100px; background-image: url('../../static/logo.png'); background-size: contain; background-repeat: no-repeat; background-position: 50% 50%; margin-bottom: 25px;"></div>
+                <div class="container-fluid" style="height: 100px; background-image: url('{% static "/logo.png" %}'); background-size: contain; background-repeat: no-repeat; background-position: 50% 50%; margin-bottom: 25px;"></div>
                 <h1 style="margin-bottom: 25px; text-align: center;">Login</h1>
                 {% if messages %}
                     {% for i in messages %}
