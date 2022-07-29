@@ -4,11 +4,11 @@
 See  deployment for HoloLMS [here](https://hololms.herokuapp.com/).
 
 ### Feautres Implemented:
- - Users --> Admin, Student, Instructor, Course. Admin, Student and Instructor are subclasses of the Django Custom User Model, edited as Member class.
- - Grades --> Assignment model, which can be an ordinary Assignment or a Quiz
- - Documents --> Docs model, which stores a file (won't work in Heroku because of /media)
- - Quizzes --> Question, QuestionBank, Quiz models are implemented here
- - Messages --> Messages, Forum Models are implemented here. Each message is a conversation, as it is a Node for a LinkedList. Forums are simply collections of Messages. All Users' models have a forum (for personal messaging, or in the case of a course, a course forum).
+ - Users - Admin, Student, Instructor, Course. Admin, Student and Instructor are subclasses of the Django Custom User Model, edited as Member class.
+ - Grades - Assignment model, which can be an ordinary Assignment or a Quiz
+ - Documents - Docs model, which stores a file (won't work in Heroku because of /media)
+ - Quizzes - Question, QuestionBank, Quiz models are implemented here
+ - Messages - Messages, Forum Models are implemented here. Each message is a conversation, as it is a Node for a LinkedList. Forums are simply collections of Messages. All Users' models have a forum (for personal messaging, or in the case of a course, a course forum).
 
 You have learnt about backend engineering with Django in our session. Now use it to create a web application by yourself!
 ## DevClub LMS (Learning Management System)
