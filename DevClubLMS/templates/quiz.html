@@ -107,11 +107,12 @@
 
         // This security feature allows only 1 quiz to occur in a browser at a time, as well as restores the timer remaining even after page change / reload
         window.onload = function() {
-            if(!(isNaN(localStorage.getItem("timerRemaining")) || localStorage.getItem("timerRemaining") == 0)) {
+            if(!(isNaN(localStorage.getItem("timerRemaining")) || localStorage.getItem("timerRemaining") <= 0)) {
                 // take the last time value
                 timeInSecs = localStorage.getItem("timerRemaining");
                 decrement();
             } else {
+                localStorage.setItem("timerRemaining", timeInSecs)
                 decrement();
             }
         }
