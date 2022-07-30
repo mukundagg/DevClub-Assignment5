@@ -29,6 +29,7 @@ See  deployment for HoloLMS [here](https://hololms.herokuapp.com/).
 7. Send and view messages via the Messages tab
 ![image](https://user-images.githubusercontent.com/15856849/181870305-37a8605f-425a-4370-91e5-c21229d2c228.png)
 8. Only 1 Quiz can be taken at a time, the timer also maintains its value even after page reload / change. Assignments and Quiz submission will close after submitting / the end date.
+![image](https://user-images.githubusercontent.com/15856849/181870789-99bc12bd-ec75-43b6-a496-d260b9dd9e6a.png)
 
 You have learnt about backend engineering with Django in our session. Now use it to create a web application by yourself!
 ## DevClub LMS (Learning Management System)
