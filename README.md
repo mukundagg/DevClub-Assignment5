@@ -10,7 +10,25 @@ See  deployment for HoloLMS [here](https://hololms.herokuapp.com/).
  - Quizzes - Question, QuestionBank, Quiz models are implemented here
  - Messages - Messages, Forum Models are implemented here. Each message is a conversation, as it is a Node for a LinkedList. Forums are simply collections of Messages. All Users' models have a forum (for personal messaging, or in the case of a course, a course forum).
 
-### Video Demostration:
+### Demostration:
+1. We begin at the login page. In case you don't have an account, you can register for one. However, your year / semester / department will only be updated by the administrator. Only an instructor can add you to a course
+![image](https://user-images.githubusercontent.com/15856849/181866869-06920df0-b63f-43c6-b22e-6c43e617912d.png)
+2. The register page - 
+![image](https://user-images.githubusercontent.com/15856849/181866901-6ead0e53-28bf-419c-bfb5-30fa7b57b86b.png)
+3. Users can edit their profiles on the My Profile page. They can view and message other users through their profiles.
+![image](https://user-images.githubusercontent.com/15856849/181867288-33327d63-30c8-44d6-b838-4b7cbaa4878b.png)
+![image](https://user-images.githubusercontent.com/15856849/181867488-b2608e48-db99-4037-bcad-9856fbd3078b.png)
+4. View your current grades on the Grades page
+![image](https://user-images.githubusercontent.com/15856849/181867513-255a50d7-2262-461c-adf9-57bd39c9651e.png)
+5. View and visit all your registered courses on the Courses tab
+![image](https://user-images.githubusercontent.com/15856849/181867571-5af772e7-6a73-4e2e-9ad9-66f0c5229761.png)
+6. Post, view announcements on the Course Forum. See all uploaded documents by the instructor, and view Assignments / Quizzes [This is how an instructor sees the page]
+![image](https://user-images.githubusercontent.com/15856849/181867625-9bc842e6-848c-4b86-8327-f20519800c45.png)
+![image](https://user-images.githubusercontent.com/15856849/181867763-0c166359-1e39-4626-8157-41d2117cfcc8.png)
+![image](https://user-images.githubusercontent.com/15856849/181870172-4ee7bb45-4b91-43de-91bc-b2a7d496a38b.png)
+7. Send and view messages via the Messages tab
+![image](https://user-images.githubusercontent.com/15856849/181870305-37a8605f-425a-4370-91e5-c21229d2c228.png)
+8. Only 1 Quiz can be taken at a time, the timer also maintains its value even after page reload / change. Assignments and Quiz submission will close after submitting / the end date.
 
 You have learnt about backend engineering with Django in our session. Now use it to create a web application by yourself!
 ## DevClub LMS (Learning Management System)
