@@ -1,2 +1,2 @@
-release: python manage.py migrate zero
+release: python manage.py migrate
 web: gunicorn DevClubLMS.wsgi
