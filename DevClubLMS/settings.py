@@ -48,7 +48,9 @@ INSTALLED_APPS = [
     'Grades',
     'Documents',
     'Quizzes',
-    'Messages'
+    'Messages',
+    'RestFramework',
+    'rest_framework', # For rest API authentication
 ]
 
 MIDDLEWARE = [
@@ -90,13 +92,13 @@ DATABASES = {
     #    'ENGINE': 'django.db.backends.sqlite3',
     #    'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #    'NAME': 'hololmstest',
-        'NAME': 'dfellpvtp872fh',
-        'HOST': 'ec2-52-207-15-147.compute-1.amazonaws.com',
-    #    'USER': 'postgres',
-        'USER': 'uqthpojetyelxc',
-    #    'PASSWORD': 'admin',
-        'PASSWORD': '1d29dd7c5e38c181d0ed69978001733ce038e3e2af0fd5d581df6dae4feecf89',
+        'NAME': 'hololmstest',
+    #    'NAME': 'dfellpvtp872fh',
+    #    'HOST': 'ec2-52-207-15-147.compute-1.amazonaws.com',
+        'USER': 'postgres',
+    #    'USER': 'uqthpojetyelxc',
+        'PASSWORD': 'admin',
+    #    'PASSWORD': '1d29dd7c5e38c181d0ed69978001733ce038e3e2af0fd5d581df6dae4feecf89',
         'PORT': '5432'
     }
 

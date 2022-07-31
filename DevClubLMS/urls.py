@@ -20,6 +20,12 @@ from django.urls import path, include
 from . import views as default_views
 from Users import views as user_views
 from Messages import views as message_views
+from rest_framework import routers
+from RestFramework import views as api_views
+
+router = routers.DefaultRouter()
+router.register(r'users', api_views.MemberViewSet);
+router.register(r'courses', api_views.CourseViewSet);
 
 urlpatterns = [
     path('admin/', admin.site.urls, name="admin"),
@@ -43,5 +49,7 @@ urlpatterns = [
     path('course/addquiz/', user_views.add_course_quiz, name="coursesquizadd"),
     path('course/postcourseforum/', user_views.post_course_msg, name="coursemsgpost"),
     path('course/submitassignment/', user_views.submit_course_assign, name="coursesassignsubmit"),
-    path('', default_views.signin, name="signin")
+    path('', default_views.signin, name="signin"),
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]  + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT);
