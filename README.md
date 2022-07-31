@@ -10,6 +10,10 @@ See  deployment for HoloLMS [here](https://hololms.herokuapp.com/).
  - Quizzes - Question, QuestionBank, Quiz models are implemented here
  - Messages - Messages, Forum Models are implemented here. Each message is a conversation, as it is a Node for a LinkedList. Forums are simply collections of Messages. All Users' models have a forum (for personal messaging, or in the case of a course, a course forum).
 
+### RESTful APIs:
+ - If you have an account you can fetch all users in JSON format from [https://hololms.herokuapp.com/api/users/](https://hololms.herokuapp.com/api/users/). For e.g: in bash: `curl -H 'Accept: application/json; indent=4' -u YourEntryNo:YourPassword https://hololms.herokuapp.com/api/users/`, where you can change YourEntryNo and YourPassword
+ - Similiarily for all courses from [https://hololms.herokuapp.com/api/courses/](https://hololms.herokuapp.com/api/courses/). Try JavaScript fetch() too!
+
 ### Demostration:
 1. We begin at the login page. In case you don't have an account, you can register for one. However, your year / semester / department will only be updated by the administrator. Only an instructor can add you to a course
 ![image](https://user-images.githubusercontent.com/15856849/181866869-06920df0-b63f-43c6-b22e-6c43e617912d.png)
