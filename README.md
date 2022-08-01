@@ -16,7 +16,7 @@ See  deployment for HoloLMS [here](https://hololms.herokuapp.com/).
 
 ### Demostration:
 1. We begin at the login page. In case you don't have an account, you can register for one. However, your year / semester / department will only be updated by the administrator. Only an instructor can add you to a course
-![image](https://user-images.githubusercontent.com/15856849/181866869-06920df0-b63f-43c6-b22e-6c43e617912d.png)
+![image](https://user-images.githubusercontent.com/15856849/182076436-162c3abf-c7ec-4455-8bd9-1dc0ec2950b3.png)
 2. The register page - 
 ![image](https://user-images.githubusercontent.com/15856849/181866901-6ead0e53-28bf-419c-bfb5-30fa7b57b86b.png)
 3. Users can edit their profiles on the My Profile page. They can view and message other users through their profiles.
