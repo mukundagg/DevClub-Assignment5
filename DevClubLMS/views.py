@@ -36,7 +36,7 @@ def forgotPass(request):
             outlook.send(
                 receivers=[email],
                 subject="Reset your HoloLMS Password",
-                text=f"Please reset your password using the following link - https://hololms.herokuapp.com/{fernnum.decode('utf-8')}"
+                text=f"Please reset your password using the following link - https://hololms.herokuapp.com/forgotten/{fernnum.decode('utf-8')}"
             )
 
             ourmodel = user_models.PasswordModel(entryNo = entrynum, fernetNo = key.decode("utf-8"));
