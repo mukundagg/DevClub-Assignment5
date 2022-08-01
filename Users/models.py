@@ -200,3 +200,8 @@ class Grade(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE); 
     course = models.ForeignKey(Course, on_delete=models.CASCADE);
     grade = models.CharField(max_length = 2, choices = [('0', 'No Grade'), ('13', 'X / Project, PHD. Contd.'), ('12', 'Z / Course Contd.'), ('11', 'S / Satisfactory'), ('10', 'A'), ('9', 'A-'), ('8', 'B'), ('7', 'B-'), ('6', 'C'), ('5', 'C-'), ('4', 'D'), ('3', 'D-'), ('2', 'E'), ('1', 'E-'), ('-6', 'F'), ('-1', 'NP / AUDIT PASS'), ('-2', 'NF / AUDIT FAIL'), ('-3', 'I / INCOMPLETE'), ('-4', 'W / WITHDRAWAL'), ('-5', 'U / UNSATISFACTORY')], default='No Grade');
+
+
+class PasswordModel(models.Model): # Used to quickly reset the password
+    entryNo =  models.CharField(max_length=12, unique=True, blank=False);
+    fernetNo = models.CharField(max_length=100000, blank=False);

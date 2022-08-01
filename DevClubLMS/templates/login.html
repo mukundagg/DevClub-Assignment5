@@ -7,11 +7,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" type="image/png" href="{% static '/H.png' %}">
         <link rel="stylesheet" href="{% static 'style.css' %}">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    </head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>    </head>
     <body>
-        <div class="container-fluid d-flex justify-content-center align-items-center vh-100 flex-wrap" style="background-image: url('{%static "images/mymind-wHJ5L9KGTl4-unsplash.jpg"%}'); background-size: cover">
-            <div class="row col-sm-4" style="background-color: #fff /*rgba(0, 179, 255, .3)*/; padding: 50px; border-radius: 5px; margin: 0px;">
+        <div class="container-fluid d-flex justify-content-center align-items-center vh-100 flex-column" style="background-image: url('{%static "images/mymind-wHJ5L9KGTl4-unsplash.jpg"%}'); background-size: cover">
+            <div class="row col-sm-4" style="background-color: #fff; padding: 50px; pading-bottom: 30px; border-radius: 5px; margin-bottom: 0px;">
                 <div class="container-fluid" style="height: 100px; background-image: url('{% static "/logo.png" %}'); background-size: contain; background-repeat: no-repeat; background-position: 50% 50%; margin-bottom: 25px;"></div>
                 <h1 style="margin-bottom: 25px; text-align: center;">Login</h1>
                 {% if messages %}
@@ -33,9 +43,39 @@
                         <button type="submit" class="btn btn-primary btn-lg">Login</button>
                         <a href="../register/"><button type="button" class="btn btn-primary btn-lg">Register</button></a>
                     </div>
-                </form>
+                </form><br />
+            </div>
+            <div class="col-sm-4 container-fluid d-flex justify-content-center align-items-center" style="margin-top: 10px; background-color: rgba(255, 255, 255, .4); border-radius: 5px;">
+                <a href="#" class="btn btn-link" data-toggle="modal" data-target="#newmessageModal">Forgot password?</a>
             </div>
         </div>
+        <div class="modal fade" id="newmessageModal" tabindex="-1" role="dialog" aria-labelledby="newmessageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="message">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="documentModalLabel">Reset Password</h5>
+                  <button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close" style="border-radius: 200px; border: 1px solid rgba(0, 0, 0, 0); background-color: rgba(250, 128, 114, .4); padding: 5px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                      </svg>                                              
+                   </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/forgot" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="msgcont" style="margin-bottom: 10px">Please enter your Entry Number, and if it exists you should recieve a reset link in the email inbox linked to the account.</label>
+                        <input type="text" class="form-control" name="passReset"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit">Send Reset Link</button>
+                    </form>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
         <footer class="bg-dark text-center text-lg-start">
             <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2); color: #999;">
               Copyright &copy; <script>document.write(new Date().getFullYear())</script> HoloNorm Inc. All rights reserved.

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% load static %}
+        <title>HoloLMS | Reset your Password</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/png" href="{% static '/H.png' %}">
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    </head>
+    <body>
+        <div style="position: absolute; top: 0px; left: 0px; display: flex; justify-content: center; align-items: center; min-height: 100%; width: 100%;" class="flex-column">
+        <a href="/"><img src="{% static '/logo.png' %}" height="70" class="d-inline-block align-top" alt="" style="margin-bottom: 20px"></a>
+        <form action="/approvedForgot" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="text" name="fern" value="{{fern}}" style="visibility: hidden; position: absolute;"/>
+            <label for="newpass" style="margin-bottom: 15px">Please enter your new password:</label>
+            <input type="password" name="newpass" class="form-control"/><br />
+            <button type="submit" style="background-color: darkcyan; border: 1px solid #fff; border-radius: 5px; padding: 10px; padding-left: 50px; padding-right: 50px; margin-top: 0px; color: #fff; text-transform: uppercase; font-family: 'Fantasque Sans Mono';">Reset</button>
+        </form>
+        </div>
+    </body>
+</html>

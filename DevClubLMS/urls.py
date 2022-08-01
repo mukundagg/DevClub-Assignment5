@@ -29,6 +29,9 @@ router.register(r'courses', api_views.CourseViewSet);
 
 urlpatterns = [
     path('admin/', admin.site.urls, name="admin"),
+    path('forgot', default_views.forgotPass, name="forgot"),
+    path('forgotten/<str:fern>', default_views.resetPass, name="reset"),
+    path('approvedForgot', default_views.approvedPass, name="approvereset"),
     path('index/', default_views.index, name="index"),
     path('user/', include('Users.urls'), name="users"),
     path('message/<slug:uniquenum>', message_views.load_message, name="message"),

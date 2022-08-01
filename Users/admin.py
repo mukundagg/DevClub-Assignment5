@@ -10,3 +10,4 @@ admin.site.register(Student);
 admin.site.register(Instructor);
 admin.site.register(Admin);
 admin.site.register(Course, CourseAdmin);
+admin.site.register(PasswordModel);
