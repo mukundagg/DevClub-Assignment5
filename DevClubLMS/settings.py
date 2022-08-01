@@ -93,13 +93,13 @@ DATABASES = {
     #    'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
     #    'NAME': 'hololmstest',
-        'NAME': 'dfellpvtp872fh',
-        'HOST': 'ec2-52-207-15-147.compute-1.amazonaws.com',
+        'NAME': env('POSTGRES_DB_NAME'),
+        'HOST': env('POSTGRES_HOST'),
     #    'USER': 'postgres',
-        'USER': 'uqthpojetyelxc',
+        'USER': env('POSTGRES_USER'),
     #    'PASSWORD': 'admin',
-        'PASSWORD': '1d29dd7c5e38c181d0ed69978001733ce038e3e2af0fd5d581df6dae4feecf89',
-        'PORT': '5432'
+        'PASSWORD': env('POSTGRES_PASSWORD'),
+        'PORT': env('POSTGRES_PORT'),
     }
 
 }
